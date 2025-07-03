@@ -10,7 +10,7 @@ import { ErrorBoundary } from "react-error-boundary";
 
 const Page = async () => {
   const queryClient = getQueryClient();
-  queryClient.prefetchQuery(trpc.agents.getMany.queryOptions());
+  void queryClient.prefetchQuery(trpc.agents.getMany.queryOptions());
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
