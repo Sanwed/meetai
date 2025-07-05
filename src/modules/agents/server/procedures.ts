@@ -7,7 +7,12 @@ import { eq, getTableColumns, sql } from "drizzle-orm";
 
 export const agentsRouter = createTRPCRouter({
   getMany: protectedProcedure.query(async () => {
-    const data = await db.select().from(agents);
+    const data = await db
+      .select({
+        meetingCount: sql<number>`5`,
+        ...getTableColumns(agents),
+      })
+      .from(agents);
 
     return data;
   }),
