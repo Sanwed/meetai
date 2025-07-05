@@ -14,8 +14,6 @@ export const AgentsView = () => {
   return (
     <div>
       <ResponsiveDialog
-        open
-        onOpenChange={() => {}}
         title="Responsive test"
         description="Responsive Description"
       >
