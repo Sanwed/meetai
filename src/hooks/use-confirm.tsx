@@ -5,13 +5,13 @@ import { JSX, useState } from "react";
 export const useConfirm = (
   title: string,
   description: string
-): [() => JSX.Element, () => Promise<unknown>] => {
+): [() => JSX.Element, () => Promise<boolean>] => {
   const [promise, setPromise] = useState<{
     resolve: (value: boolean) => void;
   } | null>(null);
 
   const confirm = () => {
-    return new Promise((resolve) => {
+    return new Promise((resolve: (value: boolean) => void) => {
       setPromise({ resolve });
     });
   };
