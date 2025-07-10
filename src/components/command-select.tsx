@@ -20,7 +20,7 @@ interface Props {
   onSearch: (value: string) => void;
   value: string;
   placeholder?: string;
-  isSearchable?: string;
+  isSearchable?: boolean;
   className?: string;
 }
 
