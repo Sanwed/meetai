@@ -98,10 +98,7 @@ export const columns: ColumnDef<MeetingGetMany[number]>[] = [
     cell: ({ row }) => (
       <Badge
         variant="outline"
-        className={cn(
-          "capitalize [&>svg]:size-4 text-muted-foreground",
-          statusColorMap[row.original.status]
-        )}
+        className="capitalize [&>svg]:size-4 text-muted-foreground"
       >
         <ClockFadingIcon className="text-blue-700" />
         {row.original.duration
