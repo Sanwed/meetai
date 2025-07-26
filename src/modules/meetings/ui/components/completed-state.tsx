@@ -112,7 +112,7 @@ export const CompletedState = ({ data }: Props) => {
                       <h4 className="text-base font-medium mb-6" {...props} />
                     ),
                     p: (props) => (
-                      <h1 className="mb-6 leading-relaxed" {...props} />
+                      <p className="mb-6 leading-relaxed" {...props} />
                     ),
                     ul: (props) => (
                       <ul className="list-disc list-inside mb-6" {...props} />
