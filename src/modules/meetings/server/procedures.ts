@@ -1,7 +1,11 @@
 import { db } from "@/db";
 import JSONL from "jsonl-parse-stringify";
 import { agents, meetings, user } from "@/db/schema";
-import { createTRPCRouter, premiumProcedure, protectedProcedure } from "@/trpc/init";
+import {
+  createTRPCRouter,
+  premiumProcedure,
+  protectedProcedure,
+} from "@/trpc/init";
 import { z } from "zod";
 import {
   and,
@@ -20,7 +24,11 @@ import {
   MIN_PAGE_SIZE,
 } from "@/constants";
 import { TRPCError } from "@trpc/server";
-import { meetingsInsertSchema, meetingsUpdateSchema } from "../schema";
+import {
+  meetingsCancelSchema,
+  meetingsInsertSchema,
+  meetingsUpdateSchema,
+} from "../schema";
 import { MeetingStatus, StreamTranscriptItem } from "../types";
 import { streamVideo } from "@/lib/stream-video";
 import { generateAvatarUri } from "@/lib/avatar";
@@ -292,7 +300,26 @@ export const meetingsRouter = createTRPCRouter({
 
       return removedMeeting;
     }),
-  create: premiumProcedure('meetings')
+  cancel: protectedProcedure
+    .input(meetingsCancelSchema)
+    .mutation(async ({ input }) => {
+      const cancelledMeeting = await db
+        .update(meetings)
+        .set({
+          status: input.status,
+        })
+        .where(eq(meetings.id, input.id));
+
+      if (!cancelledMeeting) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Meeting nor found",
+        });
+      }
+
+      return cancelledMeeting;
+    }),
+  create: premiumProcedure("meetings")
     .input(meetingsInsertSchema)
     .mutation(async ({ input, ctx }) => {
       const [createdMeeting] = await db
