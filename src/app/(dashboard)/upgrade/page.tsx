@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import {
   UpgradeViewError,
   UpgradeViewLoading,
-  UpgradeView
+  UpgradeView,
 } from "@/modules/premium/ui/views/upgrade-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";
@@ -21,10 +21,12 @@ const Page = async () => {
   }
 
   const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(
-    trpc.premium.getCurrentSubscription.queryOptions()
-  );
-  void queryClient.prefetchQuery(trpc.premium.getProducts.queryOptions());
+  await Promise.all([
+    queryClient.prefetchQuery(
+      trpc.premium.getCurrentSubscription.queryOptions()
+    ),
+    queryClient.prefetchQuery(trpc.premium.getProducts.queryOptions()),
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

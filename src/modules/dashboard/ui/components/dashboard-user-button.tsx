@@ -24,6 +24,7 @@ import { ChevronDownIcon, CreditCardIcon, LogOutIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useIsMobile } from "@/hooks/use-mobile";
 import { Button } from "@/components/ui/button";
+import { DashboardUserButtonSkeleton } from "./dashboard-user-button-skeleton";
 
 export const DashboardUserButton = () => {
   const router = useRouter();
@@ -41,7 +42,11 @@ export const DashboardUserButton = () => {
     });
   };
 
-  if (isPending || !data?.user) {
+  if (isPending) {
+    return <DashboardUserButtonSkeleton />
+  }
+
+  if (!data?.user) {
     return null;
   }
 

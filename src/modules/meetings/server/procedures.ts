@@ -301,15 +301,16 @@ export const meetingsRouter = createTRPCRouter({
       return removedMeeting;
     }),
   cancel: protectedProcedure
-    .input(meetingsCancelSchema)
-    .mutation(async ({ input }) => {
+    .input(z.string())
+    .mutation(async ({ input, ctx }) => {
       const cancelledMeeting = await db
         .update(meetings)
         .set({
-          status: input.status,
+          status: "cancelled",
         })
-        .where(eq(meetings.id, input.id));
-
+        .where(
+          and(eq(meetings.id, input), eq(meetings.userId, ctx.auth.user.id))
+        );
       if (!cancelledMeeting) {
         throw new TRPCError({
           code: "NOT_FOUND",

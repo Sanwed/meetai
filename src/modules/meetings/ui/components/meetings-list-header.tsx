@@ -40,7 +40,7 @@ export const MeetingsListHeader = () => {
           </Button>
         </div>
         <ScrollArea>
-          <div className="flex items-center gap-x-2 p-1">
+          <div className="flex items-center gap-x-2">
             <MeetingsSearchFilter />
             <StatusFilter />
             <AgentIdFilter />

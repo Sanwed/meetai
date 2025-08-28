@@ -90,7 +90,7 @@ export const MeetingIdView = ({ meetingId }: Props) => {
 
     if (!ok) return;
 
-    await cancelMeeting.mutateAsync({ id: meetingId, status: "cancelled" });
+    await cancelMeeting.mutateAsync(meetingId);
   };
 
   const isActive = data.status === "active";
