@@ -15,8 +15,17 @@ const Page = async () => {
   }
 
   const queryClient = getQueryClient();
-  void queryClient.prefetchQuery(trpc.agents.getMany.queryOptions({}));
-  void queryClient.prefetchQuery(trpc.meetings.getMany.queryOptions({}));
+  await Promise.all([
+    queryClient.prefetchQuery(
+      trpc.agents.getMany.queryOptions({
+        page: 1,
+        pageSize: 3,
+      })
+    ),
+    queryClient.prefetchQuery(
+      trpc.meetings.getMany.queryOptions({ page: 1, pageSize: 3 })
+    ),
+  ]);
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>

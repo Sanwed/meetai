@@ -91,7 +91,7 @@ export const DashboardCommand = ({ open, setOpen }: Props) => {
           ) : (
             <CommandEmpty>
               <span className="text-muted-foreground text-sm">
-                No meetings found
+                No agents found
               </span>
             </CommandEmpty>
           )}

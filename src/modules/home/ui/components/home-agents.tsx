@@ -13,7 +13,12 @@ import { useRouter } from "next/navigation";
 export const HomeAgents = () => {
   const router = useRouter();
   const trpc = useTRPC();
-  const { data } = useSuspenseQuery(trpc.agents.getMany.queryOptions({}));
+  const { data } = useSuspenseQuery(
+    trpc.agents.getMany.queryOptions({
+      page: 1,
+      pageSize: 3,
+    })
+  );
 
   return (
     <div className="flex flex-col gap-y-4">
@@ -25,7 +30,7 @@ export const HomeAgents = () => {
         </Link>
       </div>
       <DataTable
-        data={data.items.slice(0, 3)}
+        data={data.items}
         columns={columns}
         onRowClick={(row) => router.push(`/agents/${row.id}`)}
       />
