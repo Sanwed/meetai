@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import {
   UpgradeViewError,
   UpgradeViewLoading,
-  UpgradeView
+  UpgradeView,
 } from "@/modules/premium/ui/views/upgrade-view";
 import { getQueryClient, trpc } from "@/trpc/server";
 import { dehydrate, HydrationBoundary } from "@tanstack/react-query";

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { RocketIcon } from "lucide-react";
+import { RocketIcon, SparklesIcon } from "lucide-react";
 import { useQuery } from "@tanstack/react-query";
 
 import { useTRPC } from "@/trpc/client";
@@ -10,12 +10,33 @@ import {
   MAX_FREE_MEETINGS,
   MAX_FREE_AGENTS,
 } from "@/modules/premium/constants";
+import { Separator } from "@/components/ui/separator";
 
 export const DashboardTrial = () => {
   const trpc = useTRPC();
   const { data } = useQuery(trpc.premium.getFreeUsage.queryOptions());
+  const { data: currentSubscription } = useQuery(
+    trpc.premium.getCurrentSubscription.queryOptions()
+  );
 
-  if (!data) return null;
+  if (currentSubscription) {
+    return (
+      <>
+        <p className="text-lg font-medium flex gap-x-2 items-center justify-center">
+          <SparklesIcon className="size-4 text-yellow-200" />
+          <span className="text-primary">{currentSubscription.name}</span>
+          Plan
+        </p>
+        <div className="px-4 py-2">
+          <Separator className="opacity-10 text-[#5D6B68]" />
+        </div>
+      </>
+    );
+  }
+
+  if (!data) {
+    return null;
+  }
 
   return (
     <div className="border border-border/10 rounded-lg w-full bg-white/5 flex flex-col gap-y-2">

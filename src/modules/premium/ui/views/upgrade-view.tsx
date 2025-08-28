@@ -8,11 +8,11 @@ import { PricingCard } from "../components/pricing-card";
 
 export const UpgradeView = () => {
   const trpc = useTRPC();
-  const { data: products } = useSuspenseQuery(
-    trpc.premium.getProducts.queryOptions()
-  );
   const { data: currentSubscription } = useSuspenseQuery(
     trpc.premium.getCurrentSubscription.queryOptions()
+  );
+  const { data: products } = useSuspenseQuery(
+    trpc.premium.getProducts.queryOptions()
   );
 
   return (
@@ -25,7 +25,7 @@ export const UpgradeView = () => {
           </span>{" "}
           plan
         </h5>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="w-full grid grid-cols-1 md:grid-cols-3 gap-4">
           {products.map((product) => {
             const isCurrentProduct = currentSubscription?.id === product.id;
             const isPremium = !!currentSubscription;
@@ -74,7 +74,7 @@ export const UpgradeView = () => {
 
 export const UpgradeViewLoading = () => {
   return (
-    <LoadingState title="Loading" description="This may take a fwe seconds" />
+    <LoadingState title="Loading" description="This may take a few seconds" />
   );
 };
 

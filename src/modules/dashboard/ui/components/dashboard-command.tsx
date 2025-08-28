@@ -21,14 +21,14 @@ export const DashboardCommand = ({ open, setOpen }: Props) => {
   const [search, setSearch] = useState("");
   const trpc = useTRPC();
 
-  const meetings = useQuery(
+  const { data: meetings, isPending: isMeetingsLoading } = useQuery(
     trpc.meetings.getMany.queryOptions({
       search,
       pageSize: 100,
     })
   );
 
-  const agents = useQuery(
+  const { data: agents, isPending: isAgentsLoading } = useQuery(
     trpc.agents.getMany.queryOptions({
       search,
       pageSize: 100,
@@ -48,12 +48,23 @@ export const DashboardCommand = ({ open, setOpen }: Props) => {
       />
       <CommandList>
         <CommandGroup heading="Meetings">
-          <CommandEmpty>
-            <span className="text-muted-foreground text-sm">
-              No meetings found
-            </span>
-          </CommandEmpty>
-          {meetings.data?.items.map((meeting) => (
+          {isMeetingsLoading ? (
+            <div className="flex flex-col gap-y-2">
+              <div className="relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 h-11 w-full outline-hidden select-none bg-accent/50">
+                <span className="w-2/5 h-4 bg-accent" />
+              </div>
+              <div className="relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 h-11 w-full outline-hidden select-none bg-accent/50">
+                <span className="w-2/5 h-4 bg-accent" />
+              </div>
+            </div>
+          ) : (
+            <CommandEmpty>
+              <span className="text-muted-foreground text-sm">
+                No meetings found
+              </span>
+            </CommandEmpty>
+          )}
+          {meetings?.items.map((meeting) => (
             <CommandItem
               onSelect={() => {
                 router.push(`/meetings/${meeting.id}`);
@@ -66,12 +77,25 @@ export const DashboardCommand = ({ open, setOpen }: Props) => {
           ))}
         </CommandGroup>
         <CommandGroup heading="Agents">
-          <CommandEmpty>
-            <span className="text-muted-foreground text-sm">
-              No agents found
-            </span>
-          </CommandEmpty>
-          {agents.data?.items.map((agent) => (
+          {isAgentsLoading ? (
+            <div className="flex flex-col gap-y-2">
+              <div className="relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 h-11 w-full outline-hidden select-none bg-accent/50">
+                <span className="size-4 rounded-full bg-accent" />
+                <span className="w-2/5 h-4 bg-accent" />
+              </div>
+              <div className="relative flex cursor-default items-center gap-2 rounded-sm px-2 py-1.5 h-11 w-full outline-hidden select-none bg-accent/50">
+                <span className="size-4 rounded-full bg-accent" />
+                <span className="w-2/5 h-4 bg-accent" />
+              </div>
+            </div>
+          ) : (
+            <CommandEmpty>
+              <span className="text-muted-foreground text-sm">
+                No meetings found
+              </span>
+            </CommandEmpty>
+          )}
+          {agents?.items.map((agent) => (
             <CommandItem
               onSelect={() => {
                 router.push(`/agents/${agent.id}`);
@@ -79,7 +103,11 @@ export const DashboardCommand = ({ open, setOpen }: Props) => {
               }}
               key={agent.id}
             >
-              <GeneratedAvatar seed={agent.name} variant="botttsNeutral" className="size-5" />
+              <GeneratedAvatar
+                seed={agent.name}
+                variant="botttsNeutral"
+                className="size-5"
+              />
               {agent.name}
             </CommandItem>
           ))}
