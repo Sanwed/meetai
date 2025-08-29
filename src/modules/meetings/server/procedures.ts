@@ -25,7 +25,6 @@ import {
 } from "@/constants";
 import { TRPCError } from "@trpc/server";
 import {
-  meetingsCancelSchema,
   meetingsInsertSchema,
   meetingsUpdateSchema,
 } from "../schema";
