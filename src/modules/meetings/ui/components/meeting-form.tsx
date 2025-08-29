@@ -27,7 +27,7 @@ import { useRouter } from "next/navigation";
 interface MeetingFormProps {
   onSuccess?: (id?: string) => void;
   onCancel?: () => void;
-  initialValues?: MeetingGetOne;
+  initialValues?: Partial<MeetingGetOne>;
 }
 
 export const MeetingForm = ({
@@ -105,7 +105,7 @@ export const MeetingForm = ({
 
   const onSubmit = (values: z.infer<typeof meetingsInsertSchema>) => {
     if (isEdit) {
-      updateMeeting.mutate({ ...values, id: initialValues.id });
+      updateMeeting.mutate({ ...values, id: initialValues.id as string });
     } else {
       createMeeting.mutate(values);
     }
